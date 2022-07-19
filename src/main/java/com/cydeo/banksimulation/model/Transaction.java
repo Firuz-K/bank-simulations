@@ -16,5 +16,6 @@ public class Transaction {
     private BigDecimal amount;
     private String message;
     private Date creationDate;
+    //test
 
 }
