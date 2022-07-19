@@ -1,7 +1,7 @@
 package com.cydeo.banksimulation.service.impl;
 
-import com.cydeo.banksimulation.entity.Account;
-import com.cydeo.banksimulation.entity.Transaction;
+import com.cydeo.banksimulation.model.Account;
+import com.cydeo.banksimulation.model.Transaction;
 import com.cydeo.banksimulation.enums.AccountType;
 import com.cydeo.banksimulation.exception.AccountOwnershipException;
 import com.cydeo.banksimulation.exception.BadRequestException;

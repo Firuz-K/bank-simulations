@@ -1,7 +1,6 @@
 package com.cydeo.banksimulation.repository;
 
-import com.cydeo.banksimulation.entity.Account;
-import com.cydeo.banksimulation.enums.AccountType;
+import com.cydeo.banksimulation.model.Account;
 import com.cydeo.banksimulation.exception.RecordNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -14,17 +13,25 @@ public class AccountRepository {
 
     public static List<Account> accountList = new ArrayList<>();
 
-    public Account save(Account account){
+    public Account save(Account account) {
         accountList.add(account);
         return account;
+
     }
 
-    public List<Account> findAll(){
+    public List<Account> findAll() {
         return accountList;
     }
 
-    public Account findById(UUID id) {
-        return accountList.stream().filter(account -> account.getId() == id).findAny().orElseThrow(() -> new RecordNotFoundException("This account is not in database"));
+    public Account findById(UUID accountId) {
+        return accountList.stream().filter(account -> account.getId().equals(accountId)).findAny().orElseThrow(() ->
+                new RecordNotFoundException("This account is not in the database"));
+    }
+
+    public Account deleteAccount(Account account) {
+        accountList.remove(findById(account.getId()));
+        accountList.add(account);
+        return account;
 
     }
 }
