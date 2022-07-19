@@ -21,11 +21,11 @@ import java.util.UUID;
 @Component
 public class TransactionServiceImpl implements TransactionService {
 
-    @Value("{under_construction}")
+    @Value("${under_construction}")
     private boolean underConstruction;
 
-    private final AccountRepository accountRepository;
-    private final TransactionRepository transactionRepository;
+    AccountRepository accountRepository;
+    TransactionRepository transactionRepository;
 
     public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
@@ -34,19 +34,19 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction makeTransfer(BigDecimal amount, Date creationDate, Account sender, Account receiver, String message) {
-        if (!underConstruction) {
-            checkAccountOwnership(sender, receiver);
+        if(!underConstruction){
+            checkAccountOwnerShip(sender, receiver);
             validateAccounts(sender, receiver);
             executeBalanceAndUpdateIfRequired(amount, sender, receiver);
-            return transactionRepository.save(Transaction.builder()
-                    .amount(amount)
-                    .creationDate(creationDate)
-                    .sender(sender.getId())
-                    .receiver(receiver.getId())
-                    .message(message).build());
+            return transactionRepository.save(Transaction.builder().
+                    amount(amount).
+                    creationDate(creationDate).
+                    sender(sender.getId()).
+                    receiver(receiver.getId()).
+                    message(message).build()) ;
         }
         else {
-            throw new UnderConstructionException("make transfer is not possible for now. Please try again later");
+            throw new UnderConstructionException("Make transfer is not possible for now. Please try again later");
         }
 
     }
@@ -55,14 +55,14 @@ public class TransactionServiceImpl implements TransactionService {
         if(checkSenderBalance(sender, amount)){
             sender.setBalance(sender.getBalance().subtract(amount));
             receiver.setBalance(receiver.getBalance().add(amount));
-
-        }else {
+        } else {
             throw new BalanceNotSufficientException("Balance is not enough for this transaction");
         }
     }
 
     private boolean checkSenderBalance(Account sender, BigDecimal amount) {
         return sender.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) > 0;
+
     }
 
     private void validateAccounts(Account sender, Account receiver) {
@@ -70,24 +70,21 @@ public class TransactionServiceImpl implements TransactionService {
             throw new BadRequestException("Sender or receiver can not be null");
         }
         if(sender.getId().equals(receiver.getId())){
-            throw new BadRequestException("Sender Account needs to be different from receiver");
+            throw new BadRequestException("Sender account needs to be different from recaiver account");
         }
-        
+
         findAccountById(sender.getId());
         findAccountById(receiver.getId());
-
     }
 
-    private Account findAccountById(UUID id) {
-
-        return accountRepository.findById(id);
-
+    private Account findAccountById(UUID accountId) {
+        return accountRepository.findById(accountId);
     }
 
-    private void checkAccountOwnership(Account sender, Account receiver) {
+    private void checkAccountOwnerShip(Account sender, Account receiver) {
         if((sender.getAccountType().equals(AccountType.SAVINGS) || receiver.getAccountType().equals(AccountType.SAVINGS))
-            && !sender.getUserId().equals(receiver.getUserId())){
-            throw new AccountOwnershipException("When one of the account type is SAVINGS, sender and receiver has to be same person ");
+                && !sender.getUserId().equals(receiver.getUserId())){
+            throw new AccountOwnershipException("When one of the account type is SAVINGS, sender and receiver has tobe same person");
         }
     }
 
@@ -95,4 +92,14 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Transaction> findAll() {
         return transactionRepository.listAll();
     }
+
+//    @Override
+//    public List<Transaction> retrieveLastTransaction() {
+//        return transactionRepository.retrieveLastTransactions();
+//    }
+//
+//    @Override
+//    public List<Transaction> findTransactionListById(UUID id) {
+//        return transactionRepository.findTransactionListById(id);
+//    }
 }
