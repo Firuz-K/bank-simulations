@@ -1,7 +1,7 @@
 package com.cydeo.banksimulation.service.impl;
 
 import com.cydeo.banksimulation.dto.AccountDTO;
-import com.cydeo.banksimulation.entity.Account;
+import com.cydeo.banksimulation.model.Account;
 import com.cydeo.banksimulation.enums.AccountStatus;
 import com.cydeo.banksimulation.mapper.AccountMapper;
 import com.cydeo.banksimulation.repository.AccountRepository;

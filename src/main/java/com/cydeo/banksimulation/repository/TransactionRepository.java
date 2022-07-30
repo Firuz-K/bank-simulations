@@ -1,6 +1,6 @@
 package com.cydeo.banksimulation.repository;
 
-import com.cydeo.banksimulation.entity.Transaction;
+import com.cydeo.banksimulation.model.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

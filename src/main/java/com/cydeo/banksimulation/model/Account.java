@@ -1,5 +1,7 @@
-package com.cydeo.banksimulation.entity;
+package com.cydeo.banksimulation.model;
 
+import com.cydeo.banksimulation.enums.AccountStatus;
+import com.cydeo.banksimulation.enums.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,24 +16,24 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "transactions")
-public class Transaction {
+@Table(name = "accounts")
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Account sender;
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Account receiver;
-
-    private BigDecimal amount;
-
-    private String message;
+    @Enumerated(EnumType.STRING)
+    private AccountStatus accountStatus;
 
     @Column(columnDefinition = "DATE")
     private Date creationDate;
+
+    private Long userId;
+
+    private BigDecimal balance;
 
 }
