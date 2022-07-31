@@ -2,7 +2,7 @@ package com.cydeo.banksimulation.service.impl;
 
 import com.cydeo.banksimulation.dto.AccountDTO;
 import com.cydeo.banksimulation.dto.TransactionDTO;
-import com.cydeo.banksimulation.entity.Transaction;
+import com.cydeo.banksimulation.model.Transaction;
 import com.cydeo.banksimulation.enums.AccountStatus;
 import com.cydeo.banksimulation.enums.AccountType;
 import com.cydeo.banksimulation.exception.AccountOwnershipException;
